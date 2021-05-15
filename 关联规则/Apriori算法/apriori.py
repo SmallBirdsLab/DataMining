@@ -112,6 +112,7 @@ def ap_genRules(fk, k, Hm, m, support_data, min_conf):
                 HmAdd1 -= h
         ap_genRules(fk, k, HmAdd1, m+1, support_data, min_conf)
 
+'''生成关联规则'''
 def genRules(F, support_data, min_conf):
     # print('F: ', F, ' len: ', len(F))
     # F是频繁项集集合的列表，最后必有一个空集合，所以频繁k项集k的取值是[1, len(F))
