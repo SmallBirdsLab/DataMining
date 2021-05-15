@@ -114,14 +114,13 @@ def ap_genRules(fk, k, Hm, m, support_data, min_conf):
 
 '''生成关联规则'''
 def genRules(F, support_data, min_conf):
-    # print('F: ', F, ' len: ', len(F))
-    # F是频繁项集集合的列表，最后必有一个空集合，所以频繁k项集k的取值是[1, len(F))
-    for k in range(1, len(F)): # 频繁k项集集合：F[k-1] 例：{frozenset({'l5', 'l1', 'l2'}), frozenset({'l3', 'l1', 'l2'})}
-        for fk in F[k-1]:      # 频繁k项集：    fk     例： frozenset({'l5', 'l1', 'l2'})
+    # print('F: ', F, ' len: ', len(F))                 # F是频繁项集集合的列表，最后必包含一个频繁0项集集合，不用遍历，所以频繁k项集k的取值是[1, len(F))
+    for k in range(1, len(F)):                          # 频繁k项集集合：F[k-1] 例：{frozenset({'l5', 'l1', 'l2'}), frozenset({'l3', 'l1', 'l2'})}
+        for fk in F[k-1]:                               # 频繁k项集：    fk     例： frozenset({'l5', 'l1', 'l2'})
             # print('freq_set: ', freq_set, ' k: ', k)
-            H1 = set()         # 存关联规则1-后件
-            for item in fk:    # 每个频繁k项集中的一项，都可能是关联规则1-后件
-                # 满足 fk.support / (fk - item).support >= min_conf 就输出后件1项的关联规则
+            H1 = set()                                  # 存关联规则1-后件
+            for item in fk:                             # 每个频繁k项集中的一项，都可能是关联规则1-后件
+                                                        # 满足 fk.support / (fk - item).support >= min_conf 就输出后件1项的关联规则
                 if(fk - frozenset([item]) and support_data[fk] / support_data[fk - frozenset([item])] >= min_conf):
                     print(list(fk - frozenset([item])), ' => ', list(frozenset([item])), '\tsupport: ', support_data[fk], '\tconf: ', support_data[fk] / support_data[fk - frozenset([item])])
                     H1.add(frozenset([item]))
@@ -139,6 +138,6 @@ if __name__ == "__main__":
             print ("frequent " + str(len(list(Fk)[0])) + "-itemsets")
             print ("="*50)
             for fk in Fk:
-                print (list(fk), '\tsupport: ', support_data[fk])
+                print (list(fk), '\tsupport: ', support_data[fk]) # 所有fk都强转为list只是为了好看
     print('\nRules:')
     genRules(F, support_data, min_conf)
